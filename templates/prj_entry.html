@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block css %}
+<link rel="stylesheet" href="../../static/prj/css/page.css" type="text/css" />
+{% endblock %}
+
+{% block content %}
+<section id="main-contents" class="section">
+  <div id="project-form" class="container">
+    <div class="columns is-centered">
+      <div class="column is-narrow is-three-fifths">
+        <div class="field">
+          <label class="label">プロジェクト名</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="必須">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">プロジェクトのゴール／ミッション</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="必須">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">課題・背景</label>
+          <div class="control">
+            <textarea class="textarea" placeholder="なぜやるのか？ 抱えている課題とは？"></textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">プロジェクト概要</label>
+          <div class="control">
+            <textarea class="textarea" placeholder="なにをやるのか？"></textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">プロジェクト期間</label>
+          <div class="field has-addons">
+            <div class="control">
+              <input class="input" type="text" placeholder="整数">
+            </div>
+            <div class="control">
+              <span class="select">
+                <select>
+                  <option>日</option>
+                  <option>週</option>
+                  <option>ヵ月</option>
+                </select>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-link">登録</button>
+          </div>
+          <div class="control">
+            <button class="button is-link is-light">キャンセル</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script async src="../../static/prj/js/page.js"></script>
+{% endblock %}
