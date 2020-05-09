@@ -6,7 +6,7 @@ prj = Blueprint('prj', __name__, url_prefix='/prj')
 
 @prj.route('/')
 def index():
-  return render_template('prj.html', title='Project検索', prj={})
+  return render_template('prj/search.html', title='Project検索', prj={})
 
 @prj.route('/search', methods=['POST'])
 def search():
@@ -25,17 +25,17 @@ def search():
 def show(prj_id):
   if prj_id is None:
     # 早期リターン
-    return render_template('prj_show.html', title='Project詳細', data={})
+    return render_template('prj/show.html', title='Project詳細', data={})
   
   # prj_idでAWSのDBを検索
   data = get_prj(prj_id)
 
   # 詳細ページを表示
-  return render_template('prj_show.html', title='Project詳細', data=data)
+  return render_template('prj/show.html', title='Project詳細', data=data)
 
 @prj.route('/entry', methods=['GET'])
 def entry():
-  return render_template('prj_entry.html', title='Project作成')
+  return render_template('prj/entry.html', title='Project作成')
 
 @prj.route('/create', methods=['POST'])
 def create():
@@ -48,7 +48,7 @@ def create():
   data = create_prj(dto)
 
   # 詳細ページを表示
-  return render_template('prj_show.html', title='Project詳細', data=data, message='プロジェクトを作成しました。')
+  return render_template('prj/show.html', title='Project詳細', data=data, message='プロジェクトを作成しました。')
 
 
 @prj.route('/update', methods=['POST'])
@@ -68,4 +68,4 @@ def update():
   data = update_prj(data, dto)
 
   # 詳細ページを表示
-  return render_template('prj_show.html', title='Project詳細', data=data, message='プロジェクトを更新しました。')
+  return render_template('prj/show.html', title='Project詳細', data=data, message='プロジェクトを更新しました。')
