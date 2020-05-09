@@ -5,12 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "bucciaranki",
+      "name": "ripple",
       "type": "python",
       "request": "launch",
       "module": "flask",
       "stopOnEntry": false,
-      "pythonPath": "C:\\Users\\keita\\AppData\\Local\\conda\\conda\\envs\\bucciaranki\\python.exe",
+      "pythonPath": "C:\\Users\\keita\\AppData\\Local\\conda\\conda\\envs\\ripple\\python.exe",
       "cwd": "${workspaceFolder}",
       "env": {
           "FLASK_app":"${workspaceFolder}/main.py",
