@@ -27,18 +27,19 @@
     </div>
 
     <div class="navbar-end">
-      <div class="navbar-item">
+      <div id="for-unlogged-in" class="navbar-item">
         <div class="buttons">
-          <a class="button is-primary">
-            <strong>Sign up</strong>
+          <a class="button is-primary" onclick="fbLogin()">
+            <strong>Log in</strong>
           </a>
-          <a class="button is-light">
-            Log in
+        </div>
+      </div>
+      <div id="for-logged-in" class="navbar-item is-hidden">
+        <div class="buttons">
+          <span id="fb-username"></span>
+          <a class="button" onclick="fbLogout()">
+            <strong>Log out</strong>
           </a>
-          <fb:login-button 
-            scope="public_profile,email"
-            onlogin="checkLoginState();">
-          </fb:login-button>
         </div>
       </div>
     </div>

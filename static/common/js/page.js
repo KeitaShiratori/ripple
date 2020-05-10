@@ -1,3 +1,6 @@
+var _isLogin = false;
+var _fbProfile = {};
+
 (function ($) {
   $(function () {
     // facebook認証連携用コード
@@ -43,4 +46,39 @@ function checkLoginState() {
 
 function statusChangeCallback(response) {
   console.log(response)
+  // handle the response
+  if (response.status === 'connected') {
+    // Logged into your webpage and Facebook.
+    _isLogin = true
+    $('#for-unlogged-in').addClass('is-hidden')
+    $('#for-logged-in').removeClass('is-hidden')
+    _fbProfile = getFbProfile()
+  } else {
+    // The person is not logged into your webpage or we are unable to tell. 
+    _isLogin = false
+    $('#for-unlogged-in').removeClass('is-hidden')
+    $('#for-logged-in').addClass('is-hidden')
+  }
+}
+
+function fbLogin() {
+  FB.login(function(response){
+    statusChangeCallback(response);
+  }, {scope: 'public_profile,email'});
+}
+
+function getFbProfile() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+  console.log('Welcome!  Fetching your information.... ');
+  FB.api('/me', function(response) {
+    console.log('Successful login for: ' + JSON.stringify(response));
+    _fbProfile = response
+    $('#fb-username').text(`${response.name}さんとしてログイン中　`)
+  });
+}
+
+function fbLogout(){
+  FB.logout(function(response) {
+    // Person is now logged out
+    statusChangeCallback(response);
+ });
 }
