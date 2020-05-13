@@ -80,5 +80,7 @@ function fbLogout(){
   FB.logout(function(response) {
     // Person is now logged out
     statusChangeCallback(response);
+    // TOPに戻る
+    window.location.href = '/'
  });
 }

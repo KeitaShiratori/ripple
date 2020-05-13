@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, Blueprint
-
-from mw.prj import parse, search_prj, get_prj, create_prj, update_prj
+from flask import Flask, render_template, request, Blueprint, redirect, url_for
+from mw.prj import search_prj, get_prj, create_prj, update_prj
 
 prj = Blueprint('prj', __name__, url_prefix='/prj')
 
@@ -39,16 +38,16 @@ def entry():
 
 @prj.route('/create', methods=['POST'])
 def create():
-  dto = parse(request)
-  if dto is None:
+  data = dict(request.form)
+  if 'name' not in data or len(data['name']) is 0:
     # 早期リターン
     return jsonify({'code': 'W00100','message': '入力された値が無効です。'})
 
-  # prjを更新、更新後の情報をprjに再セット
-  data = create_prj(dto)
+  # # prjを更新、更新後の情報をprjに再セット
+  prj_id = create_prj(data)
 
   # 詳細ページを表示
-  return render_template('prj/show.html', title='Project詳細', data=data, message='プロジェクトを作成しました。')
+  return redirect(url_for('prj.show', prj_id=prj_id))
 
 
 @prj.route('/update', methods=['POST'])
