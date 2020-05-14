@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, Blueprint, redirect, url_for
-from mw.prj import search_prj, get_prj, create_prj, update_prj
+from mw.prj import scan_prj, get_prj, create_prj, update_prj
 
 prj = Blueprint('prj', __name__, url_prefix='/prj')
 
@@ -15,7 +15,7 @@ def search():
     return jsonify({'code': 'W00100','message': '入力された値が無効です。'})
   
   # 入力された条件でAWSのDBを検索
-  data = search_prj(dto)
+  data = scan_prj(dto)
 
   # 検索結果を表示
   return jsonify({'data': data})

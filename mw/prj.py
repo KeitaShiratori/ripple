@@ -3,25 +3,11 @@ from hashlib import blake2b
 from datetime import datetime
 import biz.prj as prj
 
-def search_prj(dto):
+def scan_prj():
   """
-  検索条件にしたがってプロジェクトを検索する
+  プロジェクトを全件取得する
   """
-  return {
-    'prjs': [
-      {
-        'prj_id': 'prjid0001',
-        'name': 'sample project',
-        'goal': 'sample goal',
-        'issue': 'sample issue',
-        'description': 'sample description',
-        'start_date': '2020/05/08',
-        'term': '1',
-        'term_unit': 'ヵ月',
-        'create_date': '2020/05/07',
-      }
-    ]
-  }
+  return prj.get('')
 
 def get_prj(prj_id):
   """
