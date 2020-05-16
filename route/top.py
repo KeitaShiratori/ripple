@@ -7,3 +7,7 @@ top = Blueprint('top', __name__, url_prefix='')
 def index():
   data = scan_prj()
   return render_template('top.html', title='TOP', data=data)
+
+@top.route('/privacy-policy')
+def privacy_policy():
+  return render_template('privacy_policy.html', title='Privacy Policy')
