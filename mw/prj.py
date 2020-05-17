@@ -27,6 +27,14 @@ def create_prj(data):
   # 入力されたprj情報にprj_idと生成日時を付与する
   data['create_date'] = datetime.now().isoformat()
   data['prj_id'] = _make_prj_id(data['create_date'])
+  data['members'] = [
+    {
+      'user_id': data['user_id'],
+      'user_name': data['user_name'],
+      'member_type': 'leader'
+    }
+  ]
+  del data['user_id'], data['user_name']
 
   prj.post(data)
   return data['prj_id']
