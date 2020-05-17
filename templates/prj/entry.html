@@ -8,7 +8,7 @@
   <div id="project-form" class="container">
     <div class="columns is-centered">
       <div class="column is-narrow is-three-fifths">
-        <form action="/prj/create" method="POST">
+        <form name="create_prj_form" onsubmit="chkform()"">
           <div class="field">
             <label class="label">プロジェクト名</label>
             <div class="control">
@@ -59,7 +59,7 @@
             <div class="column is-narrow is-three-fifths">
               <div class="field is-grouped">
                 <div class="control" style="width:100%;">
-                  <button class="button is-link" style="width:100%;">登録</button>
+                  <button class="button is-link" type="submit" style="width:100%;">登録</button>
                 </div>
               </div>
             </div>

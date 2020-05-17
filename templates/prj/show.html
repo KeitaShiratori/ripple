@@ -22,9 +22,8 @@
 
 <section id="main-contents" class="section">
   <div id="project-form" class="container">
-    <div class="columns is-centered">
-      <div class="column is-narrow is-three-fifths">
-
+    <div class="columns">
+      <div class="column is-8">
         <article class="message is-primary">
           <div class="message-header">
             <p>プロジェクトのゴール／ミッション</p>
@@ -51,25 +50,37 @@
             {{ data['description'] }}
           </div>
         </article>
-
+      </div>
+      <div class="column is-4">
+        <article class="message is-info">
+          <div class="message-header">
+            <p>プロジェクトメンバー</p>
+          </div>
+          <div class="message-body">
+            {% for i in data['members'] %}
+              {% if 'leader' == data['members'][loop.index0]['member_type'] %}
+                <p class="subtitle is-6">プロジェクトオーナー</p>
+              {% endif %}
+              <p class="title is-4">{{data['members'][loop.index0]['user_name']}}</p>
+            {% endfor %}
+          </div>
+        </article>
+        <button class="button is-info is-full" style="width:100%;">
+          <span class="has-text-weight-bold"><i class="fa fa-user-plus"></i> このプロジェクトに参加する</span>
+        </button>
+      </div>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-narrow is-6">
         <h3 class="title is-3">プロジェクトの出来事</h3>
         <div class="timeline">
           <header class="timeline-header">
-            <span class="tag is-medium is-primary">{{ data['create_date'] }}</span>
+            <span class="tag is-medium is-primary">{{ data['start_date'] }}</span>
           </header>
           <div class="timeline-item is-primary">
             <div class="timeline-marker is-primary"></div>
             <div class="timeline-content">
               <p class="heading">プロジェクト作成</p>
-            </div>
-          </div>
-          <header class="timeline-header">
-            <span class="tag is-primary">{{ data['start_date'] }}</span>
-          </header>
-          <div class="timeline-item is-primary">
-            <div class="timeline-marker is-primary"></div>
-            <div class="timeline-content">
-              <p>プロジェクト開始</p>
             </div>
           </div>
           {% for i in data['timeline'] %}
@@ -93,10 +104,8 @@
             <span class="tag is-medium is-primary">Now In Progress</span>
           </header>
         </div>
-
       </div>
     </div>
-
   </div>
 </section>
 {% endblock %}
