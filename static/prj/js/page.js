@@ -2,8 +2,21 @@ const chkform = () => {
   if(!_fbProfile || !_fbProfile.id || !_fbProfile.name){
     return false
   }
-  document.prj_create_form.user_id = _fbProfile.id
-  document.prj_create_form.user_name = _fbProfile.name
-  document.prj_create_form.action = "/prj/create"
-  document.prj_create_form.method = "post"
+  const form = $('form')[0]
+  
+  const fbid = document.createElement('input');
+  fbid.type = "hidden";
+  fbid.value = _fbProfile.id;
+  fbid.name = 'fbid';
+
+  const fbnm = document.createElement('input');
+  fbnm.type = "hidden";
+  fbnm.value = _fbProfile.name;
+  fbnm.name = 'fbnm';
+
+  form.appendChild(fbid);
+  form.appendChild(fbnm);
+
+  form.action = "/prj/create"
+  form.method = "post"
 }

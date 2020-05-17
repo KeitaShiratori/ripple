@@ -29,12 +29,12 @@ def create_prj(data):
   data['prj_id'] = _make_prj_id(data['create_date'])
   data['members'] = [
     {
-      'user_id': data['user_id'],
-      'user_name': data['user_name'],
+      'user_id': data['fbid'],
+      'user_name': data['fbnm'],
       'member_type': 'leader'
     }
   ]
-  del data['user_id'], data['user_name']
+  del data['fbid'], data['fbnm']
 
   prj.post(data)
   return data['prj_id']
