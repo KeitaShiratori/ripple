@@ -25,8 +25,9 @@ def create_prj(data):
   入力された情報でプロジェクトを作成する
   """
   # 入力されたprj情報にprj_idと生成日時を付与する
-  data['create_date'] = datetime.now().isoformat()
-  data['start_date'] = "{}/{}/{}".format(data['create_date'].year,data['create_date'].month,data['create_date'].day)
+  now = datetime.now()
+  data['create_date'] = now.isoformat()
+  data['start_date'] = "{}/{}/{}".format(now.year,now.month,now.day)
   data['prj_id'] = _make_prj_id(data['create_date'])
   data['user_id'] = data['fbid']
   data['user_name'] = data['fbnm']
