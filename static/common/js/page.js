@@ -66,6 +66,11 @@ function statusChangeCallback(response) {
     _isLogin = false
     $('#for-unlogged-in').removeClass('is-hidden')
     $('#for-logged-in').addClass('is-hidden')
+    // 認証情報をサーバに連携
+    $.ajax({
+      type: 'POST',
+      url: '/logout',
+    })
   }
 }
 

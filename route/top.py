@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, Blueprint, session, jsonify
 from mw.prj import scan_prj
-from mw.oauth import set_session
+from mw.oauth import set_session, remove_session
 import requests, os
 
 top = Blueprint('top', __name__, url_prefix='')
@@ -17,13 +17,17 @@ def oauth():
   
   set_session(request.json['authResponse'])
 
-  url_string = "https://graph.facebook.com/v7.0/oauth/access_token"
-  url_string = url_string + "?grant_type=fb_exchange_token"
-  url_string = url_string + "&client_id=" + os.environ.get('FB_APP_ID')
-  url_string = url_string + "&client_secret=" + os.environ.get('FB_APP_SECRET')
-  url_string = url_string + "&fb_exchange_token=" + session['accessToken']
+  url_string = "https://graph.facebook.com/v7.0/oauth/access_token" \
+               + "?grant_type=fb_exchange_token" \
+               + "&client_id=" + os.environ.get('FB_APP_ID') \
+               + "&client_secret=" + os.environ.get('FB_APP_SECRET') \
+               + "&fb_exchange_token=" + session['accessToken']
   r_get = requests.get(url_string)
-  print(r_get)
+  return jsonify({"status": "ok"})
+
+@top.route('/logout', methods=['POST'])
+def logout():
+  remove_session()
   return jsonify({"status": "ok"})
 
 @top.route('/privacy-policy')

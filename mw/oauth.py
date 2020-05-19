@@ -10,3 +10,6 @@ def set_session(data):
   _set_data('unix-timestamp', data)
   _set_data('seconds-until-token-expires', data)
   _set_data('signed-parameter', data)
+
+def remove_session():
+  session.clear()
