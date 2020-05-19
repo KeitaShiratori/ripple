@@ -9,11 +9,14 @@ def scan_prj():
   """
   return prj.get('')
 
-def get_prj(prj_id):
+def get_prj(prj_id, user_id):
   """
   指定されたプロジェクトIDのプロジェクトを取得する
   """
-  return prj.get(prj_id)
+  data = prj.get(prj_id)
+  data['is_login'] = True if len(user_id) else False
+  data['is_joined'] = len(list(filter(lambda m: m['user_id'] == user_id, data['members'])))
+  return data
 
 def _make_prj_id(dat):
   h = blake2b(digest_size=8)

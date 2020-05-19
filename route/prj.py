@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, Blueprint, redirect, url_for
+from flask import Flask, render_template, request, Blueprint, session, redirect, url_for
 from mw.prj import scan_prj, get_prj, create_prj, update_prj
 
 prj = Blueprint('prj', __name__, url_prefix='/prj')
@@ -25,9 +25,12 @@ def show(prj_id):
   if prj_id is None:
     # 早期リターン
     return render_template('prj/show.html', title='Project詳細', data={})
-  
+
+  # sessionからユーザ情報を取得
+  user_id = session['userID'] if "userID" in session else ""
+
   # prj_idでAWSのDBを検索
-  data = get_prj(prj_id)
+  data = get_prj(prj_id, user_id)
 
   # 詳細ページを表示
   return render_template('prj/show.html', title='Project詳細', data=data)
@@ -58,7 +61,7 @@ def update():
     return jsonify({'code': 'W00100','message': '入力された値が無効です。'})
   
   # prj_idでAWSのDBを検索
-  data = get_prj(dto.prj_id)
+  data = get_prj(dto.prj_id, user_id)
   if dto.user not in data.members:
     # 早期リターン
     return jsonify({'code': 'W00200','message': '更新権限がありません。'})

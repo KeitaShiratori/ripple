@@ -65,9 +65,12 @@
             {% endfor %}
           </div>
         </article>
-        <button class="button is-info is-full" style="width:100%;">
+        {% if not data['is_joined'] %}
+        {% set is_hidden = 'is-hidden' if not data['is_login'] else "" %}
+        <button id="prj-join-btn" class="button is-info is-full {{is_hidden}}" style="width:100%;">
           <span class="has-text-weight-bold"><i class="fa fa-user-plus"></i> このプロジェクトに参加する</span>
         </button>
+        {% endif %}
       </div>
     </div>
     <div class="columns is-centered">

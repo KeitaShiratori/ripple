@@ -53,6 +53,14 @@ function statusChangeCallback(response) {
     $('#for-unlogged-in').addClass('is-hidden')
     $('#for-logged-in').removeClass('is-hidden')
     _fbProfile = getFbProfile()
+
+    // 認証情報をサーバに連携
+    $.ajax({
+      type: 'POST',
+      url: '/oauth',
+      data: JSON.stringify(response),
+      contentType: 'application/json'
+    })
   } else {
     // The person is not logged into your webpage or we are unable to tell. 
     _isLogin = false
