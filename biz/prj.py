@@ -11,5 +11,5 @@ def get(prj_id):
   return r_get.json()
 
 def post(dic):
-  r_post = requests.post(api_endpoint + '/prj', headers=headers, json=dic)
+  r_post = requests.post(api_endpoint + '/prj', headers=headers, json={"item":dic})
   return r_post.json()
