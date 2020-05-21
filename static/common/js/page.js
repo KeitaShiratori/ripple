@@ -50,8 +50,8 @@ function statusChangeCallback(response) {
   if (response.status === 'connected') {
     // Logged into your webpage and Facebook.
     _isLogin = true
-    $('#for-unlogged-in').addClass('is-hidden')
-    $('#for-logged-in').removeClass('is-hidden')
+    $('.for-unlogged-in').addClass('is-hidden')
+    $('.for-logged-in').removeClass('is-hidden')
     _fbProfile = getFbProfile()
 
     // 認証情報をサーバに連携
@@ -64,8 +64,8 @@ function statusChangeCallback(response) {
   } else {
     // The person is not logged into your webpage or we are unable to tell. 
     _isLogin = false
-    $('#for-unlogged-in').removeClass('is-hidden')
-    $('#for-logged-in').addClass('is-hidden')
+    $('.for-unlogged-in').removeClass('is-hidden')
+    $('.for-logged-in').addClass('is-hidden')
     // 認証情報をサーバに連携
     $.ajax({
       type: 'POST',

@@ -19,12 +19,12 @@
         <div class="column is-narrow is-three-fifths">
           <div class="field has-addons">
             <div class="control" style="width:100%;">
-              <input id="search-box" class="input" type="text" placeholder="キーワードを入力">
+              <input id="search-box" class="input" type="text" placeholder="キーワードを入力" tabindex="1" onchange="filter()">
             </div>
             <div class="control">
-              <a class="button is-success" onclick="filter()">
+              <button class="button is-success" onclick="filter()" tabindex="2">
                 絞り込み
-              </a>
+              </button>
             </div>
           </div>  
         </div>
@@ -85,5 +85,8 @@
 
 {% block js %}
 <script async src="/static/top/js/page.js"></script>
-
+<script type="text/javascript" id="dataLoader">
+  var data = {{data|safe}}
+  document.querySelector('#dataLoader').remove()
+</script>
 {% endblock %}
