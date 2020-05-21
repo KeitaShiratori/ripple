@@ -19,14 +19,14 @@
         <div class="column is-narrow is-three-fifths">
           <div class="field has-addons">
             <div class="control" style="width:100%;">
-              <input class="input" type="text" placeholder="キーワードを入力">
+              <input id="search-box" class="input" type="text" placeholder="キーワードを入力">
             </div>
             <div class="control">
-              <a class="button is-success">
+              <a class="button is-success" onclick="filter()">
                 絞り込み
               </a>
             </div>
-          </div>
+          </div>  
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@
     <h2 class="title is-2">プロジェクト一覧</h2>
     <div class="columns is-multiline">
       {% for i in data %}
-      <div class="column is-4">
+      <div id="{{ data[loop.index0]['prj_id'] }}" class="column is-4">
         <div class="card" onclick="location.href=`prj/show/{{ data[loop.index0]['prj_id'] }}`" style="cursor:pointer">
           <div class="card-image">
             <figure class="image is-16by9">
@@ -85,4 +85,5 @@
 
 {% block js %}
 <script async src="/static/top/js/page.js"></script>
+
 {% endblock %}

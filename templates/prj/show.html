@@ -70,6 +70,11 @@
           <span class="has-text-weight-bold"><i class="fa fa-user-plus"></i> このプロジェクトに参加する</span>
         </button>
         {% endif %}
+        {% if True %}
+        <a id="prj-update-btn" class="button is-info is-full" href="/prj/update_entry/{{data['prj_id']}}" style="width:100%;">
+          <span class="has-text-weight-bold"><i class="fa pencil"></i> プロジェクトの内容を変更する</span>
+        </a>
+        {% endif %}
       </div>
     </div>
     <div class="columns is-centered">
