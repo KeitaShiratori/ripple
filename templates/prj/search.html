@@ -41,7 +41,7 @@
               <div class="media-content">
                 {% set leader = {"user_name": "N/A"} %}
                 {% set outer_loop = loop %}
-                <p class="subtitle is-6">プロジェクトオーナー</p>
+                <p class="subtitle is-6">プロジェクトリーダー</p>
                 {% for j in data[outer_loop.index0]['members'] %}
                   {% if 'leader' == data[outer_loop.index0]['members'][loop.index0]['member_type'] %}
                     <p class="title is-4">{{data[outer_loop.index0]['members'][loop.index0]['user_name']}}</p>

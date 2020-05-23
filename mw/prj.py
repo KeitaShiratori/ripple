@@ -16,7 +16,7 @@ def get_prj(prj_id, user_id):
   data = prj.get(prj_id)
   data['is_login'] = True if len(user_id) else False
   data['is_joined'] = len(list(filter(lambda m: m['user_id'] == user_id, data['members'])))
-  #data['is_leader'] = list(filter(lambda m: m['member_type'] == 'leader', data['mambers']))[0] == user_id
+  data['is_leader'] = list(filter(lambda m: m['member_type'] == 'leader', data['members']))[0] == user_id
 
   return data
 

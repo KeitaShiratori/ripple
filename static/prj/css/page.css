@@ -1,0 +1,8 @@
+#btn-close-timeline-form{
+  position: relative;
+  top: -2rem;
+  left: 90%;
+  height: 0px;
+  display: block;
+  color: #ccc;
+}

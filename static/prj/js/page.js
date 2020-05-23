@@ -34,3 +34,7 @@ const joinProject = (isLogin) => {
 
   // TODO ログインしていたら、プロジェクト参加処理を実行する。
 }
+
+const toggleTimelineForm = () => {
+  $('.timeline-form').toggle(300);
+}
