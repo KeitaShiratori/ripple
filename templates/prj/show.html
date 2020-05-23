@@ -84,7 +84,7 @@
           <span class="has-text-weight-bold"><i class="fa fa-stop-circle-o"></i> このプロジェクトは終了しました</span>
         </button>
         {% else %}
-        {% if data['is_login'] and not data['is_joined'] %}
+        {% if not data['is_joined'] %}
         <button id="prj-join-btn" class="button is-info is-full" onclick="joinProject({{data['is_login']}})"
           style="width:100%;">
           <span class="has-text-weight-bold"><i class="fa fa-user-plus"></i> このプロジェクトに参加する</span>
