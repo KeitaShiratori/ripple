@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, Blueprint, session, redirect, url_for
-from mw.prj import scan_prj, get_prj, create_prj, update_prj
+from mw.prj import scan_prj, get_prj, create_prj, update_prj, upd_prj
 
 prj = Blueprint('prj', __name__, url_prefix='/prj')
 
@@ -49,7 +49,6 @@ def create():
   session['referer'] = '/prj/create'
   # 詳細ページを表示
   return redirect(url_for('prj.show', prj_id=prj_id))
-
 
 @prj.route('/update_entry/<prj_id>', methods=['GET'])
 def update_entry(prj_id):
@@ -106,3 +105,12 @@ def joinProject():
   if data is None:
     # データが取得できなかった場合、
     return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
+
+  data['members'].append({
+    'member_type': 'member',
+    'user_id': user_id,
+    'user_name': 'no name'
+  })
+  del data['is_login'], data['is_joined'], data['is_leader']
+
+  data = upd_prj(data)

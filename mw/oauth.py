@@ -23,4 +23,4 @@ def _set_data(key, data):
     session[key] = data[key]
 
 def remove_session():
-  session.clear()
+  # session.clear()

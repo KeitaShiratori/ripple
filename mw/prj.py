@@ -64,3 +64,7 @@ def update_prj(data, dto):
     'term_unit': 'ヵ月',
     'create_date': '2020/05/07',
   }
+
+def upd_prj(data):
+  prj.post(data)
+  return data['prj_id']
