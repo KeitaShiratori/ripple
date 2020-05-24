@@ -44,7 +44,7 @@ function checkLoginState() {
   });
 }
 
-function statusChangeCallback(response) {
+function statusChangeCallback(response, onConnectedCallback = () => {}) {
   console.log(response)
   // handle the response
   if (response.status === 'connected') {
@@ -60,23 +60,29 @@ function statusChangeCallback(response) {
       url: '/oauth',
       data: JSON.stringify(response),
       contentType: 'application/json'
-    })
+    }).then(
+      data => onConnectedCallback(data)
+    )
+
   } else {
     // The person is not logged into your webpage or we are unable to tell. 
     _isLogin = false
-    $('.for-unlogged-in').removeClass('is-hidden')
-    $('.for-logged-in').addClass('is-hidden')
     // 認証情報をサーバに連携
     $.ajax({
       type: 'POST',
       url: '/logout',
-    })
+    }).then(
+      data => {
+        $('.for-unlogged-in').removeClass('is-hidden')
+        $('.for-logged-in').addClass('is-hidden')
+      }
+    )
   }
 }
 
-function fbLogin() {
+function fbLogin(onConnectedCallback) {
   FB.login(function(response){
-    statusChangeCallback(response);
+    statusChangeCallback(response, onConnectedCallback);
   }, {scope: 'public_profile,email'});
 }
 

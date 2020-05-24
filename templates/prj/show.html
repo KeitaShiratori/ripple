@@ -85,7 +85,7 @@
         </button>
         {% else %}
         {% if not data['is_joined'] %}
-        <button id="prj-join-btn" class="button is-info is-full" onclick="joinProject({{data['is_login']}})"
+        <button id="prj-join-btn" class="button is-info is-full" onclick="joinProject({{data['is_login'] | int }})"
           style="width:100%;">
           <span class="has-text-weight-bold"><i class="fa fa-user-plus"></i> このプロジェクトに参加する</span>
         </button>
@@ -183,6 +183,25 @@
     {% endif %}
   </div>
 </section>
+
+<div id="modal-login-for-join-project" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">ログインしてプロジェクトに参加する</p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- Content ... -->
+      プロジェクトに参加するためにはログインする必要があります。<br>
+      ログインしますか？
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success" onclick="fbLoginForJoinProject()">ログインする</button>
+      <button class="button">キャンセル</button>
+    </footer>
+  </div>
+</div>
 {% endblock %}
 
 {% block js %}

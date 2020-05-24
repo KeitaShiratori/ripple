@@ -25,16 +25,18 @@ const joinProject = (isLogin) => {
   console.log(isLogin)
   // ログインしていない人だった場合、ログインしてくださいポップアップを表示する
   if(!isLogin){
-    if(confirm("プロジェクトに参加するためにログインしてください")){
-      // OKをクリックした場合
-      // TODO facebookログイン処理を呼び出す。
-    }
+    $('#modal-login-for-join-project').addClass('is-active')
     return
   }
 
   // TODO ログインしていたら、プロジェクト参加処理を実行する。
+  joinProjectForLoggedInUser()
 }
 
-const toggleTimelineForm = () => {
-  $('.timeline-form').toggle(300);
+const joinProjectForLoggedInUser = () => {
+  location.href = "/prj/joinProject";
+}
+
+const fbLoginForJoinProject = () => {
+  fbLogin(joinProjectForLoggedInUser)
 }

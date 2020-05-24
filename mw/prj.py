@@ -14,8 +14,11 @@ def get_prj(prj_id, user_id):
   指定されたプロジェクトIDのプロジェクトを取得する
   """
   data = prj.get(prj_id)
-  data['is_login'] = True if len(user_id) else False
-  data['is_joined'] = len(list(filter(lambda m: m['user_id'] == user_id, data['members'])))
+  if 'errorMessage' in data or 'errorType' in data:
+    return None
+
+  data['is_login'] = len(user_id) > 0
+  data['is_joined'] = len(list(filter(lambda m: m['user_id'] == user_id, data['members']))) > 0
   data['is_leader'] = list(filter(lambda m: m['member_type'] == 'leader', data['members']))[0]['user_id'] == user_id
 
   return data
