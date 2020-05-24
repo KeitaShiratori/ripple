@@ -88,6 +88,7 @@ def update():
 
 @prj.route('/joinProject', methods=['GET'])
 def joinProject():
+  print("session: (userID: {}), (referer, {}), (LatestViewProjectId, {})".format(session.get('referer'),session.get('userID'),session.get('LatestViewProjectId')))
   if session['referer'] is not '/prj/show':
     # プロジェクト参加が可能なのは、プロジェクト詳細ページからプロジェクト参加ボタンを押されたときのみ。
     return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
