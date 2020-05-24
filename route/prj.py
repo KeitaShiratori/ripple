@@ -91,21 +91,21 @@ def joinProject():
   print("session: (userID: {}), (referer, {}), (LatestViewProjectId, {})".format(session.get('referer'),session.get('userID'),session.get('LatestViewProjectId')))
   if session['referer'] is not '/prj/show':
     # プロジェクト参加が可能なのは、プロジェクト詳細ページからプロジェクト参加ボタンを押されたときのみ。
-    return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
+    return render_template('err/404.html', title='404-1 | 指定された情報が見つかりませんでした')
 
   user_id = session['userID'] if "userID" in session else ""
   prj_id = session['LatestViewProjectId'] if "LatestViewProjectId" in session else ""
 
   if user_id == "" or prj_id == "":
     # ユーザID、プロジェクトIDがなかったらプロジェクト参加処理を実行できないのでエラー
-    return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
+    return render_template('err/404.html', title='404-1 | 指定された情報が見つかりませんでした')
 
   # prj_idでAWSのDBを検索
   data = get_prj(prj_id, user_id)
 
   if data is None:
     # データが取得できなかった場合、
-    return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
+    return render_template('err/404.html', title='404-1 | 指定された情報が見つかりませんでした')
 
   data['members'].append({
     'member_type': 'member',
@@ -115,3 +115,5 @@ def joinProject():
   del data['is_login'], data['is_joined'], data['is_leader']
 
   data = upd_prj(data)
+
+  return redirect(url_for('prj.show', prj_id=prj_id))
