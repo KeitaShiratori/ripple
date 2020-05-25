@@ -109,3 +109,4 @@ def join_prj(prj_id, user_id, user_name):
 
   data = upd_prj(data)
 
+  return prj_id
