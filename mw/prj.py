@@ -68,3 +68,44 @@ def update_prj(data, dto):
 def upd_prj(data):
   prj.post(data)
   return data['prj_id']
+
+def join_prj(prj_id, user_id, user_name):
+  # prj_idでAWSのDBを検索
+  data = prj.get(prj_id)
+  if 'errorMessage' in data or 'errorType' in data:
+    return None
+
+  is_joined = len(list(filter(lambda m: m['user_id'] == user_id, data['members']))) > 0
+
+  if is_joined:
+    # すでに参加済みのメンバーだった場合は、正常扱いで処理終了
+    return prj_id
+
+  data['members'].append({
+    'member_type': 'member',
+    'user_id': user_id,
+    'user_name': user_name
+  })
+
+  event = {
+    'event': '新規メンバー参画',
+    'detail': '{} さんがプロジェクトに参加しました。'.format(user_name)
+  }
+  today = datetime.now().strftime('%Y/%m/%d')
+
+  if 'timeline' not in data:
+    data['timeline'] = []
+  
+  today_events = list(filter(lambda dic: 'date_label' in dic and dic['date_label'] == today, data['timeline']))
+  if len(today_events) == 0:
+    # data['timeline']内に当日日付のdate_labelがない場合、date_labelとeventを追加する
+    data['timeline'].append(  {
+      'date_label': today,
+      'events': [event]
+    })
+  else:
+    # 当日日付のdate_labelがある場合、eventを追加する
+    today_events['events'].append(event)
+
+  data = upd_prj(data)
+

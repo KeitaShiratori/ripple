@@ -38,5 +38,6 @@ const joinProjectForLoggedInUser = () => {
 }
 
 const fbLoginForJoinProject = () => {
+  $('#modal-login-for-join-project').removeClass('is-active')
   fbLogin(joinProjectForLoggedInUser)
 }

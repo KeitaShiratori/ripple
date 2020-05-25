@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, Blueprint, session, redirect, url_for
-from mw.prj import scan_prj, get_prj, create_prj, update_prj, upd_prj
+from mw.prj import scan_prj, get_prj, create_prj, update_prj, upd_prj, join_prj
 
 prj = Blueprint('prj', __name__, url_prefix='/prj')
 
@@ -89,31 +89,23 @@ def update():
 @prj.route('/joinProject', methods=['GET'])
 def joinProject():
   print("session: (userID: {}), (referer, {}), (LatestViewProjectId, {})".format(session.get('referer'),session.get('userID'),session.get('LatestViewProjectId')))
-  if session['referer'] is not '/prj/show':
+  if session['referer'] != '/prj/show':
     # プロジェクト参加が可能なのは、プロジェクト詳細ページからプロジェクト参加ボタンを押されたときのみ。
-    return render_template('err/404.html', title='404-1 | 指定された情報が見つかりませんでした')
+    return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
 
-  user_id = session['userID'] if "userID" in session else ""
-  prj_id = session['LatestViewProjectId'] if "LatestViewProjectId" in session else ""
+  user_id = session.get('userID')
+  user_name = session.get('name')
+  prj_id = session.get('LatestViewProjectId')
 
-  if user_id == "" or prj_id == "":
-    # ユーザID、プロジェクトIDがなかったらプロジェクト参加処理を実行できないのでエラー
-    return render_template('err/404.html', title='404-1 | 指定された情報が見つかりませんでした')
+  if user_id is None or user_name is None or prj_id is None:
+    # ユーザ情報またはプロジェクトIDがなかったらプロジェクト参加処理を実行できないのでエラー
+    return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
 
-  # prj_idでAWSのDBを検索
-  data = get_prj(prj_id, user_id)
+  data = join_prj(prj_id, user_id, user_name)
 
   if data is None:
     # データが取得できなかった場合、
-    return render_template('err/404.html', title='404-1 | 指定された情報が見つかりませんでした')
+    return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
 
-  data['members'].append({
-    'member_type': 'member',
-    'user_id': user_id,
-    'user_name': 'no name'
-  })
-  del data['is_login'], data['is_joined'], data['is_leader']
-
-  data = upd_prj(data)
-
+  session['referer'] = '/prj/joinProject'
   return redirect(url_for('prj.show', prj_id=prj_id))

@@ -52,20 +52,31 @@ function statusChangeCallback(response, onConnectedCallback = () => {}) {
     _isLogin = true
     $('.for-unlogged-in').addClass('is-hidden')
     $('.for-logged-in').removeClass('is-hidden')
-    _fbProfile = getFbProfile()
+    FB.api('/me', function(me) {
+      $('#fb-username').text(`${me.name}さんとしてログイン中　`)
+      const json = Object.assign(response, me)
+      // 認証情報をサーバに連携
+      $.ajax({
+        type: 'POST',
+        url: '/oauth',
+        data: JSON.stringify(json),
+        contentType: 'application/json'
+      }).then(
+        data => onConnectedCallback(data)
+      )
+    });
+  }
+}
 
-    // 認証情報をサーバに連携
-    $.ajax({
-      type: 'POST',
-      url: '/oauth',
-      data: JSON.stringify(response),
-      contentType: 'application/json'
-    }).then(
-      data => onConnectedCallback(data)
-    )
+function fbLogin(onConnectedCallback) {
+  FB.login(function(response){
+    statusChangeCallback(response, onConnectedCallback);
+  }, {scope: 'public_profile,email'});
+}
 
-  } else {
-    // The person is not logged into your webpage or we are unable to tell. 
+function fbLogout(){
+  FB.logout(function(response) {
+    // Person is now logged out
     _isLogin = false
     // 認証情報をサーバに連携
     $.ajax({
@@ -77,28 +88,6 @@ function statusChangeCallback(response, onConnectedCallback = () => {}) {
         $('.for-logged-in').addClass('is-hidden')
       }
     )
-  }
-}
-
-function fbLogin(onConnectedCallback) {
-  FB.login(function(response){
-    statusChangeCallback(response, onConnectedCallback);
-  }, {scope: 'public_profile,email'});
-}
-
-function getFbProfile() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
-  console.log('Welcome!  Fetching your information.... ');
-  FB.api('/me', function(response) {
-    console.log('Successful login for: ' + JSON.stringify(response));
-    _fbProfile = response
-    $('#fb-username').text(`${response.name}さんとしてログイン中　`)
-  });
-}
-
-function fbLogout(){
-  FB.logout(function(response) {
-    // Person is now logged out
-    statusChangeCallback(response);
     // TOPに戻る
     window.location.href = '/'
  });

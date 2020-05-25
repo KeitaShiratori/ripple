@@ -15,9 +15,9 @@ def oauth():
   if request is None or request.json is None or "authResponse" not in request.json:
     return
   
-  authResponse = request.json['authResponse']
-  if is_valid_auth(authResponse):
-    set_session(authResponse)
+  json = request.json
+  if is_valid_auth(json['authResponse']):
+    set_session(json)
 
   return jsonify({"status": "ok"})
 

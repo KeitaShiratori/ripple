@@ -12,11 +12,12 @@ def is_valid_auth(authResponse):
   return r_get.status_code == 200
 
 def set_session(data):
-  _set_data('userID', data)
-  _set_data('accessToken', data)
-  _set_data('unix-timestamp', data)
-  _set_data('seconds-until-token-expires', data)
-  _set_data('signed-parameter', data)
+  _set_data('userID', data['authResponse'])
+  _set_data('accessToken', data['authResponse'])
+  _set_data('unix-timestamp', data['authResponse'])
+  _set_data('seconds-until-token-expires', data['authResponse'])
+  _set_data('signed-parameter', data['authResponse'])
+  _set_data('name', data)
 
 def _set_data(key, data):
   if key in data:
