@@ -43,8 +43,15 @@ def create():
     # 早期リターン
     return jsonify({'code': 'W00100','message': '入力された値が無効です。'})
 
-  # # prjを更新、更新後の情報をprjに再セット
-  prj_id = create_prj(data)
+  user_id = session.get('userID')
+  user_name = session.get('name')
+
+  if user_id is None or user_name is None:
+    # ユーザ情報がなかったら後続処理を実行できないのでエラー
+    return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
+
+  # prjを更新、更新後の情報をprjに再セット
+  prj_id = create_prj(data, user_id, user_name)
 
   session['referer'] = '/prj/create'
   # 詳細ページを表示

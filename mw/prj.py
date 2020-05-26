@@ -28,7 +28,7 @@ def _make_prj_id(dat):
   h.update(dat.encode())
   return "prj_"+h.hexdigest()
 
-def create_prj(data):
+def create_prj(data, user_id, user_name):
   """
   入力された情報でプロジェクトを作成する
   """
@@ -39,12 +39,11 @@ def create_prj(data):
   data['prj_id'] = _make_prj_id(data['create_date'])
   data['members'] = [
     {
-      'user_id': data['fbid'],
-      'user_name': data['fbnm'],
+      'user_id': user_id,
+      'user_name': user_name,
       'member_type': 'leader'
     }
   ]
-  del data['fbid'], data['fbnm']
 
   prj.post(data)
   return data['prj_id']
