@@ -91,6 +91,12 @@ def join_prj(prj_id, user_id, user_name):
     'event': '新規メンバー参画',
     'detail': '{} さんがプロジェクトに参加しました。'.format(user_name)
   }
+
+  _add_timeline(data, event)
+  data = upd_prj(data)
+  return prj_id
+
+def _add_timeline(data, event):
   today = datetime.now().strftime('%Y/%m/%d')
 
   if 'timeline' not in data:
@@ -105,8 +111,16 @@ def join_prj(prj_id, user_id, user_name):
     })
   else:
     # 当日日付のdate_labelがある場合、eventを追加する
-    today_events['events'].append(event)
+    today_events[0]['events'].append(event)
 
+def add_timeline(prj_id, form):
+  # prj_idでAWSのDBを検索
+  data = prj.get(prj_id)
+
+  event = {
+    'event': 'ユーザ入力イベント',
+    'detail': form['detail']
+  }
+  _add_timeline(data, event)
   data = upd_prj(data)
-
   return prj_id

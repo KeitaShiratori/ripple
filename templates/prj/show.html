@@ -133,19 +133,20 @@
           <header class="timeline-header">
             <span class="tag is-medium is-primary timeline-form" onclick="$('.timeline-form').toggle(400);" style="cursor: pointer;"><i
                 class="fa fa-plus"></i>&nbsp出来事を追加する</span>
-            <form class="timeline-form" method="post" action="/prt/complete" style="display: none;">
+            <form class="timeline-form" method="post" action="/prj/addTimeline" style="display: none;">
               <div class="field">
                 <label class="label" style="text-align: left;">出来事</label>
                 <div class="control">
                   <span id="btn-close-timeline-form" class="icon is-small is-right is-light" onclick="$('.timeline-form').toggle(400);">
                     <i class="fas fa-times"></i>
                   </span>
-                  <textarea class="textarea" name="event" placeholder="今日何が起こりましたか？"></textarea>
+                  <input type="hidden" name="event" value="マイルストーン達成" />
+                  <textarea class="textarea" name="detail" placeholder="今日何が起こりましたか？"></textarea>
                 </div>
               </div>
               <div class="field is-grouped">
                 <div class="control" style="width:100%;">
-                  <button id="prj-complete-btn" class="button is-primary is-full"
+                  <button id="prj-add-timeline-btn" class="button is-primary is-full"
                     type="submit"><i class="fa fa-plus"></i>&nbsp出来事を追加する</button>
                 </div>
               </div>

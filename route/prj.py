@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, Blueprint, session, redirect, url_for
-from mw.prj import scan_prj, get_prj, create_prj, update_prj, upd_prj, join_prj
+from mw.prj import scan_prj, get_prj, create_prj, update_prj, upd_prj, join_prj, add_timeline
 
 prj = Blueprint('prj', __name__, url_prefix='/prj')
 
@@ -34,7 +34,7 @@ def show(prj_id):
 @prj.route('/entry', methods=['GET'])
 def entry():
   session['referer'] = '/prj/entry'
-  return render_template('prj/entry.html', title='Project作成', data=empty_data)
+  return render_template('prj/entry.html', title='Project作成')
 
 @prj.route('/create', methods=['POST'])
 def create():
@@ -88,7 +88,6 @@ def update():
 
 @prj.route('/joinProject', methods=['GET'])
 def joinProject():
-  print("session: (userID: {}), (referer, {}), (LatestViewProjectId, {})".format(session.get('referer'),session.get('userID'),session.get('LatestViewProjectId')))
   if session['referer'] != '/prj/show':
     # プロジェクト参加が可能なのは、プロジェクト詳細ページからプロジェクト参加ボタンを押されたときのみ。
     return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
@@ -108,4 +107,26 @@ def joinProject():
     return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
 
   session['referer'] = '/prj/joinProject'
+  return redirect(url_for('prj.show', prj_id=prj_id))
+
+@prj.route('/addTimeline', methods=['POST'])
+def addTimeline():
+  if session['referer'] != '/prj/show':
+    # プロジェクト参加が可能なのは、プロジェクト詳細ページからプロジェクト参加ボタンを押されたときのみ。
+    return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
+
+  prj_id = session.get('LatestViewProjectId')
+
+  if prj_id is None:
+    # ユーザ情報またはプロジェクトIDがなかったらプロジェクト参加処理を実行できないのでエラー
+    return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
+
+  form = dict(request.form)
+  data = add_timeline(prj_id, form)
+
+  if data is None:
+    # データが取得できなかった場合、
+    return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
+
+  session['referer'] = '/prj/addTimeline'
   return redirect(url_for('prj.show', prj_id=prj_id))
