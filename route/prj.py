@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, Blueprint, session, redirect, url_for
-from mw.prj import scan_prj, get_prj, create_prj, update_prj, upd_prj, join_prj, add_timeline, add_link
+from mw.prj import scan_prj, get_prj, create_prj, update_prj, upd_prj, join_prj, add_timeline, add_link, complete_prj
 
 prj = Blueprint('prj', __name__, url_prefix='/prj')
 
@@ -158,4 +158,26 @@ def addLink():
     return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
 
   session['referer'] = '/prj/addLink'
+  return redirect(url_for('prj.show', prj_id=prj_id))
+
+@prj.route('/complete', methods=['POST'])
+def complete():
+  if session['referer'] != '/prj/show':
+    # プロジェクト参加が可能なのは、プロジェクト詳細ページからプロジェクト参加ボタンを押されたときのみ。
+    return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
+
+  prj_id = session.get('LatestViewProjectId')
+
+  if prj_id is None:
+    # ユーザ情報またはプロジェクトIDがなかったらプロジェクト参加処理を実行できないのでエラー
+    return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
+
+  form = dict(request.form)
+  data = complete_prj(prj_id, form)
+
+  if data is None:
+    # データが取得できなかった場合、
+    return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
+
+  session['referer'] = '/prj/complete'
   return redirect(url_for('prj.show', prj_id=prj_id))

@@ -25,7 +25,7 @@
                 絞り込み
               </button>
             </div>
-          </div>  
+          </div>
         </div>
       </div>
     </div>
@@ -39,7 +39,8 @@
     <div class="columns is-multiline">
       {% for i in data %}
       <div id="{{ data[loop.index0]['prj_id'] }}" class="column is-4">
-        <div class="card" onclick="location.href=`prj/show/{{ data[loop.index0]['prj_id'] }}`" style="cursor:pointer">
+        <div class="card" onclick="location.href=`prj/show/{{ data[loop.index0]['prj_id'] }}`"
+          style="cursor:pointer; {{ 'background-color: #eee;' if 'is_complete' in data[loop.index0] and data[loop.index0]['is_complete'] else '' }}">
           <div class="card-image">
             <figure class="image is-16by9">
               <img src="https://unsplash.it/400/225?d={{ loop.index0 }}" alt="Placeholder image">
@@ -57,10 +58,10 @@
                 {% set outer_loop = loop %}
                 <p class="subtitle is-6">プロジェクトリーダー</p>
                 {% for j in data[outer_loop.index0]['members'] %}
-                  {% if 'leader' == data[outer_loop.index0]['members'][loop.index0]['member_type'] %}
-                    <p class="title is-4">{{data[outer_loop.index0]['members'][loop.index0]['user_name']}}</p>
-                    {% set leader = data[outer_loop.index0]['members'][loop.index0] %}
-                  {% endif %}
+                {% if 'leader' == data[outer_loop.index0]['members'][loop.index0]['member_type'] %}
+                <p class="title is-4">{{data[outer_loop.index0]['members'][loop.index0]['user_name']}}</p>
+                {% set leader = data[outer_loop.index0]['members'][loop.index0] %}
+                {% endif %}
                 {% endfor %}
               </div>
             </div>
@@ -68,9 +69,14 @@
             <div class="content">
               <p class="title is-4 fixed-height">{{ data[loop.index0]['name'] }}</p>
               <br>
-              {% set start_date = data[loop.index0]['start_date'] %}
-              {% set start_date = start_date if start_date else "not started" %}
-              <time datetime="{{ start_date }}">{{ start_date }}</time>
+              <div>
+                <time datetime="{{ start_date }}">{{ data[loop.index0]['start_date'] }}</time>
+                {% if 'is_complete' in data[loop.index0] and data[loop.index0]['is_complete'] %}
+                {% set end_date = data[loop.index0]['start_date'] %}
+                - <time datetime="{{ end_date }}">{{ data[loop.index0]['end_date'] }}</time>
+                <span class="tag is-dark" style>終了</span>
+                {% endif %}
+              </div>
             </div>
           </div>
         </div>
@@ -85,7 +91,7 @@
 {% block js %}
 <script async src="/static/top/js/page.js"></script>
 <script type="text/javascript" id="dataLoader">
-  var data = {{data|safe}}
+  var data = {{ data| safe}}
   document.querySelector('#dataLoader').remove()
 </script>
 {% endblock %}

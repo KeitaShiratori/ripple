@@ -52,7 +52,7 @@
           </div>
         </article>
 
-        {% if data['is_complete'] in data %}
+        {% if 'is_complete' in data and data['is_complete'] %}
         <article class="message is-danger">
           <div class="message-header">
             <p>プロジェクトの成果　　なにを成し遂げたか？</p>
@@ -64,7 +64,6 @@
         {% endif %}
       </div>
       <div class="column is-4">
-        {% if data['is_joined'] %}
         <article class="message is-info">
           <div class="message-header">
             <p>関連リンク（成果物やドキュメント）</p>
@@ -72,11 +71,18 @@
           <div class="message-body">
             {% if "links" in data and data["links"] | length > 0 %}
             {% for i in data['links'] %}
-            <a href="{{data['links'][loop.index0]['link_url'] }}" target='_blank'>{{ data['links'][loop.index0]['link_title'] }}</a>
-            <br>
-            {% endfor %}
+            {% if data['links'][loop.index0]['disclosure_range'] == 'public' or data['is_joined'] %}
+            {% set disclosure_range = '（全体公開）' if data['links'][loop.index0]['disclosure_range'] == 'public' else '（メンバーのみ）' %}
+            <a href="{{data['links'][loop.index0]['link_url'] }}"
+              target='_blank'>{{ disclosure_range }}{{ data['links'][loop.index0]['link_title'] }}</a>
             <br>
             {% endif %}
+            {% endfor %}
+            <br>
+            {% else %}
+            <p>なし</p>
+            {% endif %}
+            {% if 'is_complete' not in data or not data['is_complete'] %}
             {% if data['is_joined'] %}
             <div>
               <span class="tag is-medium is-info is-light linkadd-form" onclick="$('.linkadd-form').toggle(400);"
@@ -98,19 +104,32 @@
                     <input class="input" type="text" name="link_url" placeholder="https://your-link.com/"></input>
                   </div>
                 </div>
+                <div class="field">
+                  <label class="label">公開範囲</label>
+                  <div class="field has-addons">
+                    <div class="control">
+                      <span class="select">
+                        <select name="disclosure_range"">
+                          <option value=" public">全体公開</option>
+                          <option value="private">プロジェクトメンバーのみ</option>
+                        </select>
+                      </span>
+                    </div>
+                  </div>
+                </div>
                 <input type="hidden" name="event" value="関連リンク追加" />
                 <div class="field is-grouped">
                   <div class="control" style="width:100%;">
-                    <button id="prj-add-link-btn" class="button is-info is-light is-full" type="submit" style="width:100%"><i
-                        class="fa fa-plus"></i>&nbsp関連リンクを追加する</button>
+                    <button id="prj-add-link-btn" class="button is-info is-light is-full" type="submit"
+                      style="width:100%"><i class="fa fa-plus"></i>&nbsp関連リンクを追加する</button>
                   </div>
                 </div>
               </form>
             </div>
             {% endif %}
+            {% endif %}
           </div>
         </article>
-        {% endif %}
         <article class="message is-info">
           <div class="message-header">
             <p>プロジェクトメンバー</p>
@@ -126,9 +145,9 @@
             {% endfor %}
           </div>
         </article>
-        {% if data['is_complete'] in data %}
+        {% if 'is_complete' in data and data['is_complete'] %}
         <button id="prj-complete-tag" class="button is-light is-full" style="width:100%;">
-          <span class="has-text-weight-bold"><i class="fa fa-stop-circle-o"></i> このプロジェクトは終了しました</span>
+          <span class="has-text-weight-bold"><i class="fa fa-ban"></i> このプロジェクトは終了しました</span>
         </button>
         {% else %}
         {% if not data['is_joined'] %}
@@ -171,11 +190,20 @@
             </div>
             <div class="timeline-content">
               <p class="heading">{{ data['timeline'][outer_loop.index0]['events'][loop.index0]['type'] }}</p>
+              {% if data['timeline'][outer_loop.index0]['events'][loop.index0]['disclosure_range'] == 'public' or data['is_joined'] %}
               <p>{{ data['timeline'][outer_loop.index0]['events'][loop.index0]['detail'] | safe }}</p>
+              {% else %}
+              <p>非公開の出来事が起こりました。（プロジェクトメンバーのみ閲覧可。）</p>
+              {% endif %}
             </div>
           </div>
           {% endfor %}
           {% endfor %}
+          {% if 'is_complete' in data and data['is_complete'] %}
+          <header class="timeline-header">
+            <span class="tag is-medium is-primary">プロジェクト完了</span>
+          </header>
+          {% else %}
           {% if data['is_joined'] %}
           <header class="timeline-header">
             <span class="tag is-medium is-primary timeline-form" onclick="$('.timeline-form').toggle(400);"
@@ -205,21 +233,37 @@
             <span class="tag is-medium is-primary">Now In Progress</span>
           </header>
           {% endif %}
+          {% endif %}
         </div>
       </div>
     </div>
-    {% if data['is_leader'] %}
+    {% if data['is_leader']%}
     <div class="is-divider" data-content="プロジェクト管理エリア"></div>
     <div class="columns is-centered">
+      {% if 'is_complete' in data and data['is_complete'] %}
+      <div class="column is-narrow is-9">
+        <h3 class="title is-3">プロジェクトは終了しています</h3>
+        <form>
+          <input type="hidden" name="event" value="プロジェクト再開" />
+          <div class="field is-grouped">
+            <div class="control" style="width:100%;">
+              <button id="prj-uncomplete-btn" class="button is-primary is-full"
+                style="width:100%">プロジェクトを再開する（未実装）</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      {% else %}
       <div class="column is-narrow is-9">
         <h3 class="title is-3">成果を登録してプロジェクトを終了する</h3>
-        <form method="post" action="/prt/complete">
+        <form method="post" action="/prj/complete">
           <div class="field">
             <label class="label">プロジェクト成果</label>
             <div class="control">
               <textarea class="textarea" name="outcome" placeholder="このプロジェクトで何を成し遂げたか？"></textarea>
             </div>
           </div>
+          <input type="hidden" name="event" value="プロジェクト完了" />
           <div class="field is-grouped">
             <div class="control" style="width:100%;">
               <button id="prj-complete-btn" class="button is-danger is-full" type="submit"
@@ -228,6 +272,7 @@
           </div>
         </form>
       </div>
+      {% endif %}
     </div>
     {% endif %}
   </div>

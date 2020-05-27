@@ -88,7 +88,8 @@ def join_prj(prj_id, user_id, user_name):
 
   event = {
     'event': '新規メンバー参画',
-    'detail': '{} さんがプロジェクトに参加しました。'.format(user_name)
+    'detail': '{} さんがプロジェクトに参加しました。'.format(user_name),
+    'disclosure_range': 'public'
   }
 
   _add_timeline(data, event)
@@ -118,7 +119,8 @@ def add_timeline(prj_id, form):
 
   event = {
     'event': 'ユーザ入力イベント',
-    'detail': form['detail']
+    'detail': form['detail'],
+    'disclosure_range': 'public'
   }
   _add_timeline(data, event)
   data = upd_prj(data)
@@ -130,7 +132,8 @@ def add_link(prj_id, form):
 
   event = {
     'event': form['event'],
-    'detail': "関連リンクに <a href='{}' target='_blank'>{}</a> が追加されました".format(form['link_url'],form['link_title'])
+    'detail': "関連リンクに <a href='{}' target='_blank'>{}</a> が追加されました".format(form['link_url'],form['link_title']),
+    'disclosure_range': form['disclosure_range']
   }
   _add_timeline(data, event)
 
@@ -139,8 +142,29 @@ def add_link(prj_id, form):
   
   data['links'].append({
     'link_title': form['link_title'],
-    'link_url': form['link_url']
+    'link_url': form['link_url'],
+    'disclosure_range': form['disclosure_range']
   })
+
+  data = upd_prj(data)
+  return prj_id
+
+def complete_prj(prj_id, form):
+  # prj_idでAWSのDBを検索
+  data = prj.get(prj_id)
+
+  event = {
+    'event': form['event'],
+    'detail': "プロジェクトが完了しました",
+    'disclosure_range': 'public'
+  }
+  _add_timeline(data, event)
+
+  data['outcome'] = form['outcome']
+  data['is_complete'] = True
+  now = datetime.now()
+  data['complete_date'] = now.isoformat()
+  data['end_date'] = "{}/{}/{}".format(now.year,now.month,now.day)
 
   data = upd_prj(data)
   return prj_id
