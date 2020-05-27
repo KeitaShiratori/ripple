@@ -283,7 +283,7 @@
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">ログインしてプロジェクトに参加する</p>
-      <button class="delete" aria-label="close"></button>
+      <button class="delete" aria-label="close" onclick="$('#modal-login-for-join-project').removeClass('is-active')"></button>
     </header>
     <section class="modal-card-body">
       <!-- Content ... -->
@@ -292,7 +292,7 @@
     </section>
     <footer class="modal-card-foot">
       <button class="button is-success" onclick="fbLoginForJoinProject()">ログインする</button>
-      <button class="button">キャンセル</button>
+      <button class="button" onclick="$('#modal-login-for-join-project').removeClass('is-active')">キャンセル</button>
     </footer>
   </div>
 </div>
