@@ -88,7 +88,5 @@ function fbLogout(){
         $('.for-logged-in').addClass('is-hidden')
       }
     )
-    // TOPに戻る
-    window.location.href = '/'
  });
 }

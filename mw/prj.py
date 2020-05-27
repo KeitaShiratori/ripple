@@ -123,3 +123,24 @@ def add_timeline(prj_id, form):
   _add_timeline(data, event)
   data = upd_prj(data)
   return prj_id
+
+def add_link(prj_id, form):
+  # prj_idでAWSのDBを検索
+  data = prj.get(prj_id)
+
+  event = {
+    'event': form['event'],
+    'detail': "関連リンクに <a href='{}' target='_blank'>{}</a> が追加されました".format(form['link_url'],form['link_title'])
+  }
+  _add_timeline(data, event)
+
+  if 'links' not in data:
+    data['links'] = []
+  
+  data['links'].append({
+    'link_title': form['link_title'],
+    'link_url': form['link_url']
+  })
+
+  data = upd_prj(data)
+  return prj_id

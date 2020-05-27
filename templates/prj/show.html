@@ -52,7 +52,7 @@
           </div>
         </article>
 
-        {% if 'is_complete' in data %}
+        {% if data['is_complete'] in data %}
         <article class="message is-danger">
           <div class="message-header">
             <p>プロジェクトの成果　　なにを成し遂げたか？</p>
@@ -64,6 +64,53 @@
         {% endif %}
       </div>
       <div class="column is-4">
+        {% if data['is_joined'] %}
+        <article class="message is-info">
+          <div class="message-header">
+            <p>関連リンク（成果物やドキュメント）</p>
+          </div>
+          <div class="message-body">
+            {% if "links" in data and data["links"] | length > 0 %}
+            {% for i in data['links'] %}
+            <a href="{{data['links'][loop.index0]['link_url'] }}" target='_blank'>{{ data['links'][loop.index0]['link_title'] }}</a>
+            <br>
+            {% endfor %}
+            <br>
+            {% endif %}
+            {% if data['is_joined'] %}
+            <div>
+              <span class="tag is-medium is-info is-light linkadd-form" onclick="$('.linkadd-form').toggle(400);"
+                style="cursor: pointer; width:100%;"><i class="fa fa-plus"></i>&nbsp関連リンクを追加する</span>
+              <form class="linkadd-form" method="post" action="/prj/addLink" style="display: none;">
+                <div class="field">
+                  <label class="label" style="text-align: left;">タイトル</label>
+                  <div class="control">
+                    <span id="btn-close-linkadd-form" class="icon is-small is-right is-light"
+                      onclick="$('.linkadd-form').toggle(400);">
+                      <i class="fas fa-times"></i>
+                    </span>
+                    <input class="input" type="text" name="link_title" placeholder="リンク名"></input>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label" style="text-align: left;">URL</label>
+                  <div class="control">
+                    <input class="input" type="text" name="link_url" placeholder="https://your-link.com/"></input>
+                  </div>
+                </div>
+                <input type="hidden" name="event" value="関連リンク追加" />
+                <div class="field is-grouped">
+                  <div class="control" style="width:100%;">
+                    <button id="prj-add-link-btn" class="button is-info is-light is-full" type="submit" style="width:100%"><i
+                        class="fa fa-plus"></i>&nbsp関連リンクを追加する</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            {% endif %}
+          </div>
+        </article>
+        {% endif %}
         <article class="message is-info">
           <div class="message-header">
             <p>プロジェクトメンバー</p>
@@ -79,7 +126,7 @@
             {% endfor %}
           </div>
         </article>
-        {% if 'is_complete' in data %}
+        {% if data['is_complete'] in data %}
         <button id="prj-complete-tag" class="button is-light is-full" style="width:100%;">
           <span class="has-text-weight-bold"><i class="fa fa-stop-circle-o"></i> このプロジェクトは終了しました</span>
         </button>
@@ -124,20 +171,21 @@
             </div>
             <div class="timeline-content">
               <p class="heading">{{ data['timeline'][outer_loop.index0]['events'][loop.index0]['type'] }}</p>
-              <p>{{ data['timeline'][outer_loop.index0]['events'][loop.index0]['detail'] }}</p>
+              <p>{{ data['timeline'][outer_loop.index0]['events'][loop.index0]['detail'] | safe }}</p>
             </div>
           </div>
           {% endfor %}
           {% endfor %}
           {% if data['is_joined'] %}
           <header class="timeline-header">
-            <span class="tag is-medium is-primary timeline-form" onclick="$('.timeline-form').toggle(400);" style="cursor: pointer;"><i
-                class="fa fa-plus"></i>&nbsp出来事を追加する</span>
+            <span class="tag is-medium is-primary timeline-form" onclick="$('.timeline-form').toggle(400);"
+              style="cursor: pointer;"><i class="fa fa-plus"></i>&nbsp出来事を追加する</span>
             <form class="timeline-form" method="post" action="/prj/addTimeline" style="display: none;">
               <div class="field">
                 <label class="label" style="text-align: left;">出来事</label>
                 <div class="control">
-                  <span id="btn-close-timeline-form" class="icon is-small is-right is-light" onclick="$('.timeline-form').toggle(400);">
+                  <span id="btn-close-timeline-form" class="icon is-small is-right is-light"
+                    onclick="$('.timeline-form').toggle(400);">
                     <i class="fas fa-times"></i>
                   </span>
                   <input type="hidden" name="event" value="マイルストーン達成" />
@@ -146,8 +194,8 @@
               </div>
               <div class="field is-grouped">
                 <div class="control" style="width:100%;">
-                  <button id="prj-add-timeline-btn" class="button is-primary is-full"
-                    type="submit"><i class="fa fa-plus"></i>&nbsp出来事を追加する</button>
+                  <button id="prj-add-timeline-btn" class="button is-primary is-full" type="submit"><i
+                      class="fa fa-plus"></i>&nbsp出来事を追加する</button>
                 </div>
               </div>
             </form>

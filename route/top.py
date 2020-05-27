@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, Blueprint, session, jsonify
+from flask import Flask, render_template, request, Blueprint, session, jsonify, redirect, url_for
 from mw.prj import scan_prj
 from mw.oauth import is_valid_auth, set_session, remove_session
 
 top = Blueprint('top', __name__, url_prefix='')
 
 @top.route('/')
+@top.route('/index')
 def index():
   data = scan_prj()
   session['referer'] = '/'
@@ -24,7 +25,7 @@ def oauth():
 @top.route('/logout', methods=['POST'])
 def logout():
   remove_session()
-  return jsonify({"status": "ok"})
+  return redirect(url_for('top.index'))
 
 @top.route('/privacy-policy')
 def privacy_policy():
