@@ -43,7 +43,8 @@
           style="cursor:pointer; {{ 'background-color: #eee;' if 'is_complete' in data[loop.index0] and data[loop.index0]['is_complete'] else '' }}">
           <div class="card-image">
             <figure class="image is-16by9">
-              <img src="https://unsplash.it/400/225?d={{ loop.index0 }}" alt="Placeholder image">
+              {% set img_url = '/prj/jrnpoiajoiaj/' + data[loop.index0]['photo_id'] if 'photo_id' in data[loop.index0] else 'https://unsplash.it/400/225?d=' + loop.index0 | string() %}
+              <img src="{{ img_url }}" alt="Placeholder image">
             </figure>
           </div>
           <div class="card-content">

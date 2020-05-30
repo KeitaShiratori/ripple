@@ -9,3 +9,7 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
+
+figure.image.is-16by9 > img {
+  object-fit: cover;
+}

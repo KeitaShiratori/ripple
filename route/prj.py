@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, Blueprint, session, redirect, url_for
 from mw.prj import scan_prj, get_prj, create_prj, update_prj, upd_prj, join_prj, add_timeline, add_link, complete_prj
+from mw.img import upload_img, get_img
 
 prj = Blueprint('prj', __name__, url_prefix='/prj')
 
@@ -31,6 +32,12 @@ def show(prj_id):
   # 詳細ページを表示
   return render_template('prj/show.html', title='Project詳細', data=data)
 
+@prj.route('/jrnpoiajoiaj/<photo_id>', methods=['GET'])
+def show_img(photo_id):
+  if photo_id is None:
+    return ""
+  return get_img(photo_id)
+
 @prj.route('/entry', methods=['GET'])
 def entry():
   session['referer'] = '/prj/entry'
@@ -49,6 +56,13 @@ def create():
   if user_id is None or user_name is None:
     # ユーザ情報がなかったら後続処理を実行できないのでエラー
     return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
+
+  # 画像を取得
+  if 'photo' in request.files:
+    photo = request.files['photo']
+    photo_id = upload_img(photo)
+    if photo_id is not None:
+      data['photo_id'] = photo_id
 
   # prjを更新、更新後の情報をprjに再セット
   prj_id = create_prj(data, user_id, user_name)

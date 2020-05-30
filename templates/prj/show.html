@@ -7,12 +7,14 @@
 {% endblock %}
 
 {% block content %}
-<section class="hero is-medium is-primary is-bold">
+{% set herostyle = 'background: url("/prj/jrnpoiajoiaj/gQxPS0yQIZxN1L7aLWjpy4JUIBpQQ33V.png") center; background-size: cover; height: 56.25vw;' if 'photo_id' in data else '' %}
+{% set titlestyle = 'background-color: #6666;padding: 1rem;width: 100vw;text-align: center;' if 'photo_id' in data else ''%}
+<section class="hero is-medium is-primary is-bold" style="{{ herostyle }}">
   <div class="hero-body">
     <div class="container">
       <div class="columns is-centered">
         <div class="column is-narrow">
-          <h1 class="title is-1">
+          <h1 class="title is-1" style="{{ titlestyle }}">
             {{ data['name'] }}
           </h1>
         </div>

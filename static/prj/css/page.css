@@ -6,3 +6,30 @@
   display: block;
   color: #ccc;
 }
+
+div.reader_file {
+  position: relative;
+  width: 100%;
+}
+div.reader_file:before {
+  content:"";
+  display: block;
+  padding-top: 56.25%; /* 高さを幅の75%に固定 */
+}
+div.reader_file > img{
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width:768px) {
+  h1.title.is-1 {
+    font-size: x-large;
+    width: initial !important;
+  }
+}

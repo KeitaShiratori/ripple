@@ -20,9 +20,9 @@ const fbLoginForJoinProject = () => {
 }
 
 $('#photo-input').on('change', event => {
-  $('#thumbnail').innerHTML = ""
+  $('#thumbnail')[0].innerHTML = ""
 
-  var file = event.target.file;
+  var file = event.target.files[0];
 
   var reader = new FileReader;
   reader.readAsDataURL(file);
@@ -31,10 +31,9 @@ $('#photo-input').on('change', event => {
     return function (e) {
       var div = document.createElement('div');
       div.className = 'reader_file';
-      div.innerHTML = '<div class="reader_title">' + encodeURIComponent(theFile.name) + '</div>';
       div.innerHTML += '<img class="reader_image" src="' + e.target.result + '" />';
-      $('#thumbnail').insertBefore(div, null);
-      $('#file-name').innerHTML = encodeURIComponent(theFile.name)
+      $('#thumbnail')[0].insertBefore(div, null);
+      $('#file-name').text(theFile.name)
     }
   })(file);
 })

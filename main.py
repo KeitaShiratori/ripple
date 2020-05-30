@@ -11,6 +11,8 @@ app.register_blueprint(prj)
 
 # sessionを有効にするための秘密鍵
 app.secret_key = os.environ.get('SECRET_KEY')
+# limit upload file size : 1MB
+app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024
 
 @app.route('/favicon.ico')
 def favicon():
