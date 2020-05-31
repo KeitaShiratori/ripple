@@ -5,10 +5,13 @@
 <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
 <!-- 共通スタイル -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.8.2/css/bulma.min.css"> -->
-<link rel="stylesheet" href="/static/common/node_modules/bulma/css/bulma.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.8.2/css/bulma.min.css">
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-<link rel="stylesheet" href="/static/common/css/page.css" />
+<style type="text/css">
+.navbar-brand > a.navbar-item > img {
+  max-height: 2.5rem;
+}
+</style>
 <!-- 個別ページcss -->
 {% block css %}
 {% endblock %}
@@ -27,7 +30,7 @@
 
   <!-- 共通JS -->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="/static/common/js/page.js"></script>
+  <script async src="/static/common/js/page.js"></script>
 
   <!-- 個別ページJS -->
   {% block js %}

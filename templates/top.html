@@ -1,6 +1,21 @@
 {% extends "layout.html" %}
 {% block css %}
-<link rel="stylesheet" href="/static/top/css/page.css" type="text/css" />
+<style type="text/css">
+.fixed-height {
+  height: 5rem;
+  max-height: 5rem;
+  min-height: 5rem;
+  font-size: 18px;
+  font-weight: bold;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+figure.image.is-16by9 > img {
+  object-fit: cover;
+}</style>
 {% endblock %}
 
 {% block content %}
