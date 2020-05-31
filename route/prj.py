@@ -58,7 +58,7 @@ def create():
     return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
 
   # 画像を取得
-  if 'photo' in request.files:
+  if 'photo' in request.files and len(request.files['photo'].filename) > 0:
     photo = request.files['photo']
     photo_id = upload_img(photo)
     if photo_id is not None:
