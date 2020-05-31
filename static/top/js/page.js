@@ -1,7 +1,3 @@
-const receiveData = data => {
-  return data
-}
-
 const filter = () => {
   // 検索ボックスに入力された文字列を使って、プロジェクトの絞り込みを行う
   const searchWord = $('#search-box').val()
@@ -20,7 +16,7 @@ const filter = () => {
     for (let dat of data) {
       for (let key in dat) {
         const str = String(dat[key])
-        if (str.indexOf(searchWord) > 0) {
+        if (str.indexOf(searchWord) > -1) {
           // 検索文字列が含まれないプロジェクトは非表示にする
           $(`#${dat['prj_id']}`).removeClass('is-hidden')
           break

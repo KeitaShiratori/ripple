@@ -90,9 +90,14 @@
 {% endblock %}
 
 {% block js %}
+{% set DATA = [] %}
+{% for i in data %}
+{% set item = {'prj_id': data[loop.index0]['prj_id'], 'name': data[loop.index0]['name'], 'members': data[loop.index0]['members'][0]['user_name'] }%}
+{{ DATA.append(item) }}
+{% endfor %}
 <script async src="/static/top/js/page.js"></script>
 <script type="text/javascript" id="dataLoader">
-  var data = {{ data| safe}}
+  var data = {{ DATA | safe }}
   document.querySelector('#dataLoader').remove()
 </script>
 {% endblock %}
