@@ -15,7 +15,30 @@
 
 figure.image.is-16by9 > img {
   object-fit: cover;
-}</style>
+}
+
+div.is-completed:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-top: 55px solid #444c;
+  border-right: 55px solid transparent;
+  z-index: 1;
+}
+div.is-completed:after {
+  content: "終了";
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: small;
+  color: #FFF;
+  transform: rotate(-45deg) translate(-5px, 5px);
+  z-index: 1;
+}
+</style>
 {% endblock %}
 
 {% block content %}
@@ -56,7 +79,8 @@ figure.image.is-16by9 > img {
       <div id="{{ data[loop.index0]['prj_id'] }}" class="column is-4">
         <div class="card" onclick="location.href=`prj/show/{{ data[loop.index0]['prj_id'] }}`"
           style="cursor:pointer; {{ 'background-color: #eee;' if 'is_complete' in data[loop.index0] and data[loop.index0]['is_complete'] else '' }}">
-          <div class="card-image">
+          {% set img_class = 'is-completed' if 'is_complete' in data[loop.index0] and data[loop.index0]['is_complete'] else '' %}
+          <div class="card-image {{img_class}}">
             <figure class="image is-16by9">
               {% set img_url = '/prj/jrnpoiajoiaj/' + data[loop.index0]['photo_id'] if 'photo_id' in data[loop.index0] else 'https://unsplash.it/400/225?d=' + loop.index0 | string() %}
               <img src="{{ img_url }}" alt="Placeholder image">

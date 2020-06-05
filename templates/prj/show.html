@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-{% set herostyle = 'background: url("/prj/jrnpoiajoiaj/gQxPS0yQIZxN1L7aLWjpy4JUIBpQQ33V.png") center; background-size: cover; height: 56.25vw;' if 'photo_id' in data else '' %}
+{% set herostyle = 'background: url("/prj/jrnpoiajoiaj/' + data['photo_id'] + '") center; background-size: cover; height: 56.25vw;' if 'photo_id' in data else '' %}
 {% set titlestyle = 'background-color: #6666;padding: 1rem;width: 100vw;text-align: center;' if 'photo_id' in data else ''%}
 <section class="hero is-medium is-primary is-bold" style="{{ herostyle }}">
   <div class="hero-body">

@@ -48,21 +48,11 @@ def create_prj(data, user_id, user_name):
   prj.post(data)
   return data['prj_id']
 
-def update_prj(data, dto):
-  """
-  入力された情報でプロジェクトを更新する
-  """
-  return {
-    'prj_id': 'prjid0001',
-    'name': 'sample project',
-    'goal': 'sample goal',
-    'issue': 'sample issue',
-    'description': 'sample description',
-    'start_date': '2020/05/08',
-    'term': '1',
-    'term_unit': 'ヵ月',
-    'create_date': '2020/05/07',
-  }
+def update_prj(prj_id, new_data):
+  data = prj.get(prj_id)
+  data.update(new_data)
+  prj.post(data)
+  return data['prj_id']
 
 def upd_prj(data):
   prj.post(data)

@@ -89,23 +89,32 @@ def update_entry(prj_id):
 
 @prj.route('/update', methods=['POST'])
 def update():
-  dto = parse(request)
-  if dto is None:
+  new_data = dict(request.form)
+  if 'name' not in new_data or len(new_data['name']) is 0:
     # 早期リターン
     return jsonify({'code': 'W00100','message': '入力された値が無効です。'})
-  
-  # prj_idでAWSのDBを検索
-  data = get_prj(dto.prj_id, user_id)
-  if dto.user not in data.members:
-    # 早期リターン
-    return jsonify({'code': 'W00200','message': '更新権限がありません。'})
+
+  user_id = session.get('userID')
+  user_name = session.get('name')
+  prj_id = session.get('LatestViewProjectId')
+
+  if user_id is None or user_name is None:
+    # ユーザ情報がなかったら後続処理を実行できないのでエラー
+    return render_template('err/404.html', title='404 | 指定された情報が見つかりませんでした')
+
+  # 画像を取得
+  if 'photo' in request.files and len(request.files['photo'].filename) > 0:
+    photo = request.files['photo']
+    photo_id = upload_img(photo)
+    if photo_id is not None:
+      new_data['photo_id'] = photo_id
 
   # prjを更新、更新後の情報をprjに再セット
-  data = update_prj(data, dto)
+  data = update_prj(prj_id, new_data)
 
   session['referer'] = '/prj/update'
   # 詳細ページを表示
-  return render_template('prj/show.html', title='Project詳細', data=data, message='プロジェクトを更新しました。')
+  return redirect(url_for('prj.show', prj_id=prj_id))
 
 @prj.route('/joinProject', methods=['GET'])
 def joinProject():

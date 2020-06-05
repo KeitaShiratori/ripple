@@ -8,7 +8,7 @@
   <div id="project-form" class="container">
     <div class="columns is-centered">
       <div class="column is-narrow is-three-fifths">
-        <form name="create_prj_form" onsubmit="chkform()"">
+        <form name="create_prj_form" method="post" action="/prj/update" enctype="multipart/form-data">
           <div class="field">
             <label class="label">プロジェクト名</label>
             <div class="control">
@@ -26,31 +26,39 @@
           <div class="field">
             <label class="label">課題・背景</label>
             <div class="control">
-              <textarea class="textarea" name="issue" placeholder="なぜやるのか？ 抱えている課題とは？"></textarea>
+              <textarea class="textarea" name="issue" placeholder="なぜやるのか？ 抱えている課題とは？">{{data['issue'] | safe}}</textarea>
             </div>
           </div>
 
           <div class="field">
             <label class="label">プロジェクト概要</label>
             <div class="control">
-              <textarea class="textarea" name="description" placeholder="なにをやるのか？"></textarea>
+              <textarea class="textarea" name="description" placeholder="なにをやるのか？">{{data['description'] | safe}}</textarea>
             </div>
           </div>
 
           <div class="field">
-            <label class="label">プロジェクト期間</label>
-            <div class="field has-addons">
-              <div class="control">
-                <input class="input" type="text" name="term" placeholder="整数">
-              </div>
-              <div class="control">
-                <span class="select">
-                  <select name="term_unit">
-                    <option value="day">日</option>
-                    <option value="week">週</option>
-                    <option value="month">ヵ月</option>
-                  </select>
+            <label class="label">カバー写真</label>
+            <div class="file has-name is-fullwidth">
+              <label class="file-label">
+                <input id="photo-input" class="file-input" type="file" name="photo" accept="image/png, image/jpg, image/jpeg" >
+                <span class="file-cta">
+                  <span class="file-icon">
+                    <i class="fas fa-upload"></i>
+                  </span>
+                  <span class="file-label">
+                    Choose a file…
+                  </span>
                 </span>
+                <span id="file-name" class="file-name">
+                  選択されていません
+                </span>
+              </label>
+            </div>
+            <div id="thumbnail">
+              <div class="reader_file">
+                {% set image_src = '/prj/jrnpoiajoiaj/' + data['photo_id'] if 'photo_id' in data else 'https://bulma.io/images/placeholders/640x360.png' %}
+                <img class="reader_image" src="{{ image_src }}" />
               </div>
             </div>
           </div>
